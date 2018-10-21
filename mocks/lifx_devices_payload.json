@@ -1,0 +1,39 @@
+[
+    {
+      "id": "123",
+      "uuid": "123",
+      "label": "Main",
+      "connected": true,
+      "power": "on",
+      "color": {
+        "hue": 240,
+        "saturation": 1,
+        "kelvin": 4000
+      },
+      "brightness": 1,
+      "group": {
+        "id": "123",
+        "name": "My Room"
+      },
+      "location": {
+        "id": "123",
+        "name": "My Home"
+      },
+      "product": {
+        "name": "LIFX BR30",
+        "identifier": "lifx_br30",
+        "company": "LIFX",
+        "capabilities": {
+          "has_color": true,
+          "has_variable_color_temp": true,
+          "has_ir": false,
+          "has_chain": false,
+          "has_multizone": false,
+          "min_kelvin": 2500,
+          "max_kelvin": 9000
+        }
+      },
+      "last_seen": "2018-10-21T04:13:04Z",
+      "seconds_since_seen": 0
+    }
+]
