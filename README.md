@@ -6,6 +6,8 @@
 
 Filament is an unofficial Go wrapper for [LIFX's HTTP API](https://api.developer.lifx.com/docs).
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/panicpanicpanic/filament)](https://goreportcard.com/report/github.com/panicpanicpanic/filament)
+
 ## Build Status
 | branch | status |
 | --- | --- |
