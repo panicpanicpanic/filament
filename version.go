@@ -1,3 +1,4 @@
 package filament
 
-const Version = "0.0.1"
+// Version represents the current version Filament is on
+const version = "0.0.1"
