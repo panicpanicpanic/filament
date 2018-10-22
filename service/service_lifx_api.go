@@ -41,7 +41,7 @@ func (s *Service) LIFXGetRequest(lifx *LIFXReq) ([]filament.Device, error) {
 	responseString := string(body)
 
 	if statusCode > 207 {
-		return devices, fmt.Errorf("Uh oh! You've recieved a %d status code. Error: %s", statusCode, responseString)
+		return devices, fmt.Errorf("Uh oh! You've received a %d status code. Error: %s", statusCode, responseString)
 	}
 
 	err = json.Unmarshal(body, &devices)
