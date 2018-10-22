@@ -6,7 +6,6 @@
 
 Filament is an unofficial Go wrapper for [LIFX's HTTP API](https://api.developer.lifx.com/docs).
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/panicpanicpanic/filament)](https://goreportcard.com/report/github.com/panicpanicpanic/filament)
 
 ## Build Status
 | branch | status |
@@ -14,17 +13,20 @@ Filament is an unofficial Go wrapper for [LIFX's HTTP API](https://api.developer
 | `develop` | [![CircleCI](https://circleci.com/gh/panicpanicpanic/filament/tree/develop.svg?style=svg)](https://circleci.com/gh/panicpanicpanic/filament) |
 | `master` | [![CircleCI](https://circleci.com/gh/panicpanicpanic/filament/tree/master.svg?style=svg)](https://circleci.com/gh/panicpanicpanic/filament) |
 
+## Go Report
+[![Go Report Card](https://goreportcard.com/badge/github.com/panicpanicpanic/filament)](https://goreportcard.com/report/github.com/panicpanicpanic/filament)
+
 ### Installation
 
 You can install Filament with either ```go get```
 ```sh
-$ go get github.com/panicpanicpanic/filament/device
+$ go get github.com/panicpanicpanic/filament/...
 ```
 
  or ```dep```
 
 ```sh
-$ dep ensure -add github.com/panicpanicpanic/filament/device
+$ dep ensure -add github.com/panicpanicpanic/filament/...
 ```
 
 ### How To Use
