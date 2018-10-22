@@ -17,28 +17,23 @@ Filament is an unofficial Go wrapper for [LIFX's HTTP API](https://api.developer
 
 You can install Filament with either ```go get```
 ```sh
-$ go get github.com/panicpanicpanic/filament/...
+$ go get github.com/panicpanicpanic/filament
 ```
 
  or ```dep```
 
 ```sh
-$ dep ensure -add github.com/panicpanicpanic/filament/...
+$ dep ensure -add github.com/panicpanicpanic/filament
 ```
 
 ## How To Use
-```
 
-```
+### Authentication
+In order to access your LIFX devices, you must first have a valid access token. You can visit the [LIFX Cloud page](https://cloud.lifx.com/settings) to set one up:
+![](https://files.readme.io/Uw1PRNPoQ7nFUYDuT6oA_GetLIFXToken.gif)
 
 ## Contributing
 Want to contribute? Just fork the repo, make a feature/bug PR and send it over! Just be sure you write some tests, too!
-
-## Todos
-
- - Add more routes
- - Add CLI mode
- - Add LAN protocols
 
 License
 ----
