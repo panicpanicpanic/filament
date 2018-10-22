@@ -10,9 +10,9 @@ import (
 )
 
 // LIFXGetRequest makes a GET request to the LIFX HTTP API
-func (s *Service) LIFXGetRequest(lifx *LIFXReq) ([]device.Device, error) {
+func (s *Service) LIFXGetRequest(lifx *LIFXReq) ([]filament.Device, error) {
 	var err error
-	var devices []device.Device
+	var devices []filament.Device
 	var client http.Client
 	var statusCode int
 
