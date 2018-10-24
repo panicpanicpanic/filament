@@ -57,3 +57,19 @@ type DeviceCapabilities struct {
 	MinKelvin            float64 `json:"min_kelvin"`
 	MaxKelvin            float64 `json:"max_kelvin"`
 }
+
+// DeviceScene represents currently available scenes for your LIFX bulb
+type DeviceScene struct {
+	UUID      string            `json:"uuid"`
+	Name      string            `json:"name"`
+	Account   map[string]string `json:"account"`
+	CreatedAt time.Time         `json:"created_at"`
+	UpdatedAt time.Time         `json:"updated_at"`
+	States    []DeviceState     `json:"states"`
+}
+
+// DeviceState represents the states of a DeviceScene
+type DeviceState struct {
+	DeviceColor `json:"color"`
+	Selector    string `json:"selector"`
+}
