@@ -10,7 +10,7 @@ import (
 	"github.com/panicpanicpanic/filament"
 )
 
-func TestLIFXGetRequest(t *testing.T) {
+func TestLIFXGet(t *testing.T) {
 	var lifx filament.LIFXReq
 	var filament filament.Filament
 
@@ -33,7 +33,7 @@ func TestLIFXGetRequest(t *testing.T) {
 
 		lifx.URL = server.URL
 
-		_, err = filament.LIFXGetRequest(&lifx)
+		_, err = filament.Get(&lifx)
 		if err == nil {
 			t.Errorf("it should have thrown an error for not supplying an AccessToken, got %d", err)
 		}
@@ -48,7 +48,7 @@ func TestLIFXGetRequest(t *testing.T) {
 		lifx.LIFXClient.AccessToken = "someRandomToken"
 		lifx.URL = ""
 
-		_, err = filament.LIFXGetRequest(&lifx)
+		_, err = filament.Get(&lifx)
 		if err == nil {
 			t.Errorf("it should have thrown an error for not supplying an AccessToken, got %d", err)
 		}
@@ -63,7 +63,7 @@ func TestLIFXGetRequest(t *testing.T) {
 		lifx.LIFXClient.AccessToken = "someRandomToken"
 		lifx.URL = server.URL
 
-		_, err = filament.LIFXGetRequest(&lifx)
+		_, err = filament.Get(&lifx)
 		if err == nil {
 			t.Errorf("it should have thrown an error for returning a 500 HTTP status, got %d", err)
 		}
@@ -78,8 +78,8 @@ func TestLIFXGetRequest(t *testing.T) {
 		lifx.LIFXClient.AccessToken = "someRandomToken"
 		lifx.URL = server.URL
 
-		devices, err := filament.LIFXGetRequest(&lifx)
-		if len(devices) == 0 {
+		body, err := filament.Get(&lifx)
+		if len(body) == 0 {
 			t.Errorf("it should have returned 1 empty device, got %d", err)
 		}
 	})

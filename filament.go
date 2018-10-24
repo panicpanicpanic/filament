@@ -1,6 +1,7 @@
 package filament
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
@@ -26,17 +27,27 @@ type LIFXReq struct {
 
 // GetLights returns []Device's that belong to your LIFX account
 func (f *Filament) GetLights(client *LIFXClient) ([]Device, error) {
+	var body []byte
 	var devices []Device
 	var err error
 	var req LIFXReq
 
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and URL path
 	req.LIFXClient.AccessToken = client.AccessToken
 	req.URL = LIFXAPIURL + "/lights/all"
 
-	devices, err = f.LIFXGetRequest(&req)
+	// Use Get service method to GET info from LIFX HTTP API
+	body, err = f.Get(&req)
 	if err != nil {
 		return devices, fmt.Errorf(err.Error())
 	}
 
+	// Unmarshal body respone to []Device
+	err = json.Unmarshal(body, &devices)
+	if err != nil {
+		return devices, fmt.Errorf(err.Error())
+	}
+
+	// If successful GetLights returns []Device
 	return devices, nil
 }
