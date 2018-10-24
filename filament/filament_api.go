@@ -7,7 +7,7 @@ import (
 )
 
 // GetLights returns []Device's that belong to your LIFX account
-func GetLights(client *service.LIFXReq) ([]service.Device, error) {
+func (f *Filament) GetLights(client *service.LIFXReq) ([]service.Device, error) {
 	var devices []service.Device
 	var err error
 	var service service.Service
