@@ -5,14 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	"github.com/panicpanicpanic/filament/device"
 )
 
 // LIFXGetRequest makes a GET request to the LIFX HTTP API
-func (s *Service) LIFXGetRequest(lifx *LIFXReq) ([]filament.Device, error) {
+func (s *Service) LIFXGetRequest(lifx *LIFXReq) ([]Device, error) {
 	var err error
-	var devices []filament.Device
+	var devices []Device
 	var client http.Client
 	var statusCode int
 

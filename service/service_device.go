@@ -1,6 +1,15 @@
-package filament
+package service
 
-import "time"
+import (
+	"time"
+)
+
+// LIFXClient represents the LIFX client
+type LIFXClient struct {
+	AccessToken string
+	URL         string
+	Devices     []Device
+}
 
 // Device represents the core fields for LIFX lightbulb info
 type Device struct {
@@ -45,7 +54,7 @@ type DeviceProduct struct {
 	Capabilities DeviceCapabilities `json:"capabilities"`
 }
 
-// DeviceCapabilities represents all of the features a Device has
+// DeviceCapabilities represents all of the current features a Device has
 type DeviceCapabilities struct {
 	HasColor             bool    `json:"has_color"`
 	HasVariableColorTemp bool    `json:"has_variable_color_temp"`

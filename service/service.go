@@ -6,5 +6,6 @@ type LIFXReq struct {
 	URL         string
 }
 
-// Service is being exported for access to rest of application
-type Service struct{}
+// Service represents the package service
+type Service struct {
+}
