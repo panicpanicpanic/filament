@@ -10,10 +10,6 @@ const (
 	LIFXAPIURL = "https://api.lifx.com/v1"
 )
 
-// Filament struct
-type Filament struct {
-}
-
 // GetLights returns []Device that belong to your LIFX account
 func (f *Filament) GetLights(client *LIFXClient) ([]Device, error) {
 	var body []byte

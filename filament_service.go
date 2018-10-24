@@ -6,6 +6,10 @@ import (
 	"net/http"
 )
 
+// Filament struct declarion
+type Filament struct {
+}
+
 // LIFXClient represents the LIFX client structure for reaching LIFX HTTP API
 type LIFXClient struct {
 	AccessToken string
