@@ -96,7 +96,7 @@ func (f *Filament) ValidateColor(client *LIFXClient, color string) (DeviceColor,
 		return deviceColor, fmt.Errorf(err.Error())
 	}
 
-	// Unmarshal body respone to []DeviceScene
+	// Unmarshal body respone to DeviceColor
 	err = json.Unmarshal(body, &deviceColor)
 	if err != nil {
 		return deviceColor, fmt.Errorf(err.Error())
