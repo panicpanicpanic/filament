@@ -1,4 +1,4 @@
-package service
+package filament_test
 
 import (
 	"io/ioutil"
@@ -6,13 +6,15 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"github.com/panicpanicpanic/filament"
 )
 
 func TestLIFXGetRequest(t *testing.T) {
-	var service Service
-	var lifx LIFXReq
+	var lifx filament.LIFXReq
+	var filament filament.Filament
 
-	mock, err := os.Open("../mocks/lifx_devices_payload.json")
+	mock, err := os.Open("./mocks/lifx_devices_payload.json")
 	if err != nil {
 		t.Errorf("it should not throw an error, got %d", err)
 	}
@@ -31,7 +33,7 @@ func TestLIFXGetRequest(t *testing.T) {
 
 		lifx.URL = server.URL
 
-		_, err = service.LIFXGetRequest(&lifx)
+		_, err = filament.LIFXGetRequest(&lifx)
 		if err == nil {
 			t.Errorf("it should have thrown an error for not supplying an AccessToken, got %d", err)
 		}
@@ -43,10 +45,10 @@ func TestLIFXGetRequest(t *testing.T) {
 			w.Write(payload)
 		}))
 
-		lifx.AccessToken = "someRandomToken"
+		lifx.LIFXClient.AccessToken = "someRandomToken"
 		lifx.URL = ""
 
-		_, err = service.LIFXGetRequest(&lifx)
+		_, err = filament.LIFXGetRequest(&lifx)
 		if err == nil {
 			t.Errorf("it should have thrown an error for not supplying an AccessToken, got %d", err)
 		}
@@ -58,10 +60,10 @@ func TestLIFXGetRequest(t *testing.T) {
 			w.Write(payload)
 		}))
 
-		lifx.AccessToken = "someRandomToken"
+		lifx.LIFXClient.AccessToken = "someRandomToken"
 		lifx.URL = server.URL
 
-		_, err = service.LIFXGetRequest(&lifx)
+		_, err = filament.LIFXGetRequest(&lifx)
 		if err == nil {
 			t.Errorf("it should have thrown an error for returning a 500 HTTP status, got %d", err)
 		}
@@ -73,10 +75,10 @@ func TestLIFXGetRequest(t *testing.T) {
 			w.Write(payload)
 		}))
 
-		lifx.AccessToken = "someRandomToken"
+		lifx.LIFXClient.AccessToken = "someRandomToken"
 		lifx.URL = server.URL
 
-		devices, err := service.LIFXGetRequest(&lifx)
+		devices, err := filament.LIFXGetRequest(&lifx)
 		if len(devices) == 0 {
 			t.Errorf("it should have returned 1 empty device, got %d", err)
 		}

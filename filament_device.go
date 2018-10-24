@@ -1,15 +1,8 @@
-package service
+package filament
 
 import (
 	"time"
 )
-
-// LIFXClient represents the LIFX client
-type LIFXClient struct {
-	AccessToken string
-	URL         string
-	Devices     []Device
-}
 
 // Device represents the core fields for LIFX lightbulb info
 type Device struct {

@@ -2,21 +2,38 @@ package filament
 
 import (
 	"fmt"
-
-	"github.com/panicpanicpanic/filament/service"
 )
 
-//Filament does stuff
+const (
+	// LIFXAPIURL is the URL for the latest LIFX HTTP API
+	LIFXAPIURL = "https://api.lifx.com/v1"
+)
+
+// Filament struct
 type Filament struct {
 }
 
-// GetLights returns []Device's that belong to your LIFX account
-func (f *Filament) GetLights(client *service.LIFXReq) ([]service.Device, error) {
-	var devices []service.Device
-	var err error
-	var service service.Service
+// LIFXClient represents the LIFX client structure for reaching LIFX HTTP API
+type LIFXClient struct {
+	AccessToken string
+}
 
-	devices, err = service.LIFXGetRequest(client)
+// LIFXReq represents the request structure for reaching LIFX HTTP API
+type LIFXReq struct {
+	LIFXClient LIFXClient
+	URL        string
+}
+
+// GetLights returns []Device's that belong to your LIFX account
+func (f *Filament) GetLights(client *LIFXClient) ([]Device, error) {
+	var devices []Device
+	var err error
+	var req LIFXReq
+
+	req.LIFXClient.AccessToken = client.AccessToken
+	req.URL = LIFXAPIURL + "/lights/all"
+
+	devices, err = f.LIFXGetRequest(&req)
 	if err != nil {
 		return devices, fmt.Errorf(err.Error())
 	}

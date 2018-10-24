@@ -1,4 +1,4 @@
-package service
+package filament
 
 import (
 	"encoding/json"
@@ -8,18 +8,18 @@ import (
 )
 
 // LIFXGetRequest makes a GET request to the LIFX HTTP API
-func (s *Service) LIFXGetRequest(lifx *LIFXReq) ([]Device, error) {
+func (f *Filament) LIFXGetRequest(lifx *LIFXReq) ([]Device, error) {
 	var err error
 	var devices []Device
 	var client http.Client
 	var statusCode int
 
-	if lifx.AccessToken == "" || lifx.URL == "" {
+	if lifx.LIFXClient.AccessToken == "" || lifx.URL == "" {
 		return devices, fmt.Errorf("In order to access the LIFX API, you must supply a valid AccessToken and URL")
 	}
 
 	request, err := http.NewRequest(http.MethodGet, lifx.URL, nil)
-	request.Header.Set("Authorization", lifx.AccessToken)
+	request.Header.Set("Authorization", "Bearer "+lifx.LIFXClient.AccessToken)
 	if err != nil {
 		return devices, fmt.Errorf(err.Error())
 	}
