@@ -6,6 +6,17 @@ import (
 	"net/http"
 )
 
+// LIFXClient represents the LIFX client structure for reaching LIFX HTTP API
+type LIFXClient struct {
+	AccessToken string
+}
+
+// LIFXReq represents the request structure for reaching LIFX HTTP API
+type LIFXReq struct {
+	LIFXClient LIFXClient
+	URL        string
+}
+
 // Get makes a GET request to the LIFX HTTP API and returns []byte
 func (f *Filament) Get(lifx *LIFXReq) ([]byte, error) {
 	var err error

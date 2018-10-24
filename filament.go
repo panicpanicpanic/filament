@@ -14,17 +14,6 @@ const (
 type Filament struct {
 }
 
-// LIFXClient represents the LIFX client structure for reaching LIFX HTTP API
-type LIFXClient struct {
-	AccessToken string
-}
-
-// LIFXReq represents the request structure for reaching LIFX HTTP API
-type LIFXReq struct {
-	LIFXClient LIFXClient
-	URL        string
-}
-
 // GetLights returns []Device that belong to your LIFX account
 func (f *Filament) GetLights(client *LIFXClient) ([]Device, error) {
 	var body []byte
