@@ -78,3 +78,30 @@ func (f *Filament) GetScenes(client *LIFXClient) ([]DeviceScene, error) {
 	// If successful GetLights returns []DeviceScene
 	return scenes, nil
 }
+
+// ValidateColor returns a DeviceColor if a valid color string is passed
+func (f *Filament) ValidateColor(client *LIFXClient, color string) (DeviceColor, error) {
+	var body []byte
+	var deviceColor DeviceColor
+	var err error
+	var req LIFXReq
+
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and URL path
+	req.LIFXClient.AccessToken = client.AccessToken
+	req.URL = LIFXAPIURL + "/color?string=" + color
+
+	// Use Get service method to GET info from LIFX HTTP API
+	body, err = f.Get(&req)
+	if err != nil {
+		return deviceColor, fmt.Errorf(err.Error())
+	}
+
+	// Unmarshal body respone to []DeviceScene
+	err = json.Unmarshal(body, &color)
+	if err != nil {
+		return deviceColor, fmt.Errorf(err.Error())
+	}
+
+	// If successful ValidateColor returns DeviceColor
+	return deviceColor, nil
+}
