@@ -19,10 +19,10 @@ type LIFXReq struct {
 
 // Get makes a GET request to the LIFX HTTP API and returns []byte
 func (f *Filament) Get(lifx *LIFXReq) ([]byte, error) {
-	var err error
-	var client http.Client
-	var statusCode int
 	var body []byte
+	var client http.Client
+	var err error
+	var statusCode int
 
 	if lifx.LIFXClient.AccessToken == "" || lifx.URL == "" {
 		return body, fmt.Errorf("In order to access the LIFX API, you must supply a valid AccessToken and URL")
