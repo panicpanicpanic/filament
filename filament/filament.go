@@ -1,5 +1,5 @@
 package filament
 
-//Filamanet does stuff
-type Filamanet struct {
+//Filament does stuff
+type Filament struct {
 }
