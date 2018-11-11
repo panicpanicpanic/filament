@@ -1,4 +1,4 @@
-package filament_test
+package service_test
 
 import (
 	"io/ioutil"
@@ -7,14 +7,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/panicpanicpanic/filament"
+	"github.com/panicpanicpanic/filament/lifx"
+	"github.com/panicpanicpanic/filament/service"
 )
 
 func TestLIFXGet(t *testing.T) {
-	var lifx filament.LIFXReq
-	var filament filament.Filament
+	var client lifx.Client
 
-	mock, err := os.Open("./mocks/lifx_devices_payload.json")
+	mock, err := os.Open("../mocks/lifx_devices_payload.json")
 	if err != nil {
 		t.Errorf("it should not throw an error, got %d", err)
 	}
@@ -31,9 +31,9 @@ func TestLIFXGet(t *testing.T) {
 			w.Write(payload)
 		}))
 
-		lifx.URL = server.URL
+		client.Endpoint = server.URL
 
-		_, err = filament.Get(&lifx)
+		_, err = service.Get(&client)
 		if err == nil {
 			t.Errorf("it should have thrown an error for not supplying an AccessToken, got %d", err)
 		}
@@ -45,10 +45,10 @@ func TestLIFXGet(t *testing.T) {
 			w.Write(payload)
 		}))
 
-		lifx.LIFXClient.AccessToken = "someRandomToken"
-		lifx.URL = ""
+		client.AccessToken = "someRandomToken"
+		client.Endpoint = ""
 
-		_, err = filament.Get(&lifx)
+		_, err = service.Get(&client)
 		if err == nil {
 			t.Errorf("it should have thrown an error for not supplying an AccessToken, got %d", err)
 		}
@@ -60,10 +60,10 @@ func TestLIFXGet(t *testing.T) {
 			w.Write(payload)
 		}))
 
-		lifx.LIFXClient.AccessToken = "someRandomToken"
-		lifx.URL = server.URL
+		client.AccessToken = "someRandomToken"
+		client.Endpoint = server.URL
 
-		_, err = filament.Get(&lifx)
+		_, err = service.Get(&client)
 		if err == nil {
 			t.Errorf("it should have thrown an error for returning a 500 HTTP status, got %d", err)
 		}
@@ -75,10 +75,10 @@ func TestLIFXGet(t *testing.T) {
 			w.Write(payload)
 		}))
 
-		lifx.LIFXClient.AccessToken = "someRandomToken"
-		lifx.URL = server.URL
+		client.AccessToken = "someRandomToken"
+		client.Endpoint = server.URL
 
-		body, err := filament.Get(&lifx)
+		body, err := service.Get(&client)
 		if len(body) == 0 {
 			t.Errorf("it should have returned 1 empty device, got %d", err)
 		}

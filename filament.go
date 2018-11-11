@@ -3,90 +3,77 @@ package filament
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/panicpanicpanic/filament/device"
+	"github.com/panicpanicpanic/filament/lifx"
+	"github.com/panicpanicpanic/filament/service"
 )
 
-const (
-	// LIFXAPIURL is the URL for the latest LIFX HTTP API
-	LIFXAPIURL = "https://api.lifx.com/v1"
-)
-
-// GetLights returns []Device that belong to your LIFX account
-func (f *Filament) GetLights(client *LIFXClient) ([]Device, error) {
+// GetLights returns []device.Device that belong to your LIFX account
+func GetLights(client *lifx.Client) ([]device.Device, error) {
 	var body []byte
-	var devices []Device
+	var devices []device.Device
 	var err error
-	var req LIFXReq
 
 	// In order to access LIFX HTTP API, you must pass a valid AccessToken and URL path
-	req.LIFXClient.AccessToken = client.AccessToken
-	req.URL = LIFXAPIURL + "/lights/all"
+	client.Endpoint = lifx.LIFXAPIURL + "/lights/all"
 
-	// Use Get service method to GET info from LIFX HTTP API
-	body, err = f.Get(&req)
+	body, err = service.Get(client)
 	if err != nil {
 		return devices, fmt.Errorf(err.Error())
 	}
 
-	// Unmarshal body respone to []Device
 	err = json.Unmarshal(body, &devices)
 	if err != nil {
 		return devices, fmt.Errorf(err.Error())
 	}
 
-	// If successful GetLights returns []Device
+	// Return []device.Device or return an error
 	return devices, nil
 }
 
-// GetScenes returns []DeviceScene that belong to your LIFX account
-func (f *Filament) GetScenes(client *LIFXClient) ([]DeviceScene, error) {
+// GetScenes returns []device.Scene that belong to your LIFX account
+func GetScenes(client *lifx.Client) ([]device.Scene, error) {
 	var body []byte
-	var scenes []DeviceScene
+	var scenes []device.Scene
 	var err error
-	var req LIFXReq
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and URL path
-	req.LIFXClient.AccessToken = client.AccessToken
-	req.URL = LIFXAPIURL + "/scenes"
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
+	client.Endpoint = lifx.LIFXAPIURL + "/scenes"
 
-	// Use Get service method to GET info from LIFX HTTP API
-	body, err = f.Get(&req)
+	body, err = service.Get(client)
 	if err != nil {
 		return scenes, fmt.Errorf(err.Error())
 	}
 
-	// Unmarshal body respone to []DeviceScene
 	err = json.Unmarshal(body, &scenes)
 	if err != nil {
 		return scenes, fmt.Errorf(err.Error())
 	}
 
-	// If successful GetLights returns []DeviceScene
+	// Return []device.Scene or return an error
 	return scenes, nil
 }
 
-// ValidateColor returns a DeviceColor if a valid color string is passed
-func (f *Filament) ValidateColor(client *LIFXClient, color string) (DeviceColor, error) {
+// ValidateColor returns a device.Color if a valid color string is passed
+func ValidateColor(client *lifx.Client, color string) (device.Color, error) {
 	var body []byte
-	var deviceColor DeviceColor
+	var deviceColor device.Color
 	var err error
-	var req LIFXReq
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and URL path
-	req.LIFXClient.AccessToken = client.AccessToken
-	req.URL = LIFXAPIURL + "/color?string=" + color
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
+	client.Endpoint = lifx.LIFXAPIURL + "/color?string=" + color
 
-	// Use Get service method to GET info from LIFX HTTP API
-	body, err = f.Get(&req)
+	body, err = service.Get(client)
 	if err != nil {
 		return deviceColor, fmt.Errorf(err.Error())
 	}
 
-	// Unmarshal body respone to DeviceColor
 	err = json.Unmarshal(body, &deviceColor)
 	if err != nil {
 		return deviceColor, fmt.Errorf(err.Error())
 	}
 
-	// If successful ValidateColor returns DeviceColor
+	// Return device.Color or return error
 	return deviceColor, nil
 }
