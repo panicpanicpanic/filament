@@ -77,3 +77,31 @@ func ValidateColor(client *lifx.Client, color string) (device.Color, error) {
 	// Return device.Color or return error
 	return deviceColor, nil
 }
+
+// SetState sets the state of the lights within the given selector, and returns a LIFX Response
+func SetState(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+	var body []byte
+	var err error
+	var response lifx.Response
+
+	// If no selector is passed, default to setting state to all lights
+	if selector == "" {
+		selector = "all"
+	}
+
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
+	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/state"
+
+	body, err = service.Put(client, payload)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	// Return lifx.Response or return error
+	return response, nil
+}
