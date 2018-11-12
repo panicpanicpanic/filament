@@ -10,13 +10,18 @@ import (
 )
 
 // GetLights returns []device.Device that belong to your LIFX account
-func GetLights(client *lifx.Client) ([]device.Device, error) {
+func GetLights(client *lifx.Client, selector string) ([]device.Device, error) {
 	var body []byte
 	var devices []device.Device
 	var err error
 
+	// If no selector is passed, default to retrieving all lights for your LIFX account
+	if selector == "" {
+		selector = "all"
+	}
+
 	// In order to access LIFX HTTP API, you must pass a valid AccessToken and URL path
-	client.Endpoint = lifx.LIFXAPIURL + "/lights/all"
+	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector
 
 	body, err = service.Get(client)
 	if err != nil {
@@ -84,7 +89,7 @@ func SetState(client *lifx.Client, selector string, payload interface{}) (lifx.R
 	var err error
 	var response lifx.Response
 
-	// If no selector is passed, default to setting state to all lights
+	// If no selector is passed, default to setting state for all lights
 	if selector == "" {
 		selector = "all"
 	}
