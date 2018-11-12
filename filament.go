@@ -110,3 +110,26 @@ func SetState(client *lifx.Client, selector string, payload interface{}) (lifx.R
 	// Return lifx.Response or return error
 	return response, nil
 }
+
+// SetStates sets multiple states across multiple selectors, and returns a LIFX Response
+func SetStates(client *lifx.Client, payload interface{}) (lifx.Response, error) {
+	var body []byte
+	var err error
+	var response lifx.Response
+
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
+	client.Endpoint = lifx.LIFXAPIURL + "/lights/states"
+
+	body, err = service.Put(client, payload)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	// Return lifx.Response or return error
+	return response, nil
+}
