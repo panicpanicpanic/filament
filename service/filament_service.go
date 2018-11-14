@@ -18,7 +18,7 @@ func Get(client *lifx.Client) ([]byte, error) {
 	var statusCode int
 
 	if client.AccessToken == "" || client.Endpoint == "" {
-		return body, fmt.Errorf("In order to access the LIFX API, you must supply a valid AccessToken and URL")
+		return body, fmt.Errorf("In order to access the LIFX API, you must supply a valid AccessToken and Endpoint")
 	}
 
 	request, err := http.NewRequest(http.MethodGet, client.Endpoint, nil)
@@ -57,11 +57,11 @@ func Put(client *lifx.Client, payload interface{}) ([]byte, error) {
 
 	data, err := json.Marshal(payload)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf(err.Error())
 	}
 
 	if client.AccessToken == "" || client.Endpoint == "" {
-		return nil, fmt.Errorf("In order to access the LIFX API, you must supply a valid AccessToken and URL")
+		return nil, fmt.Errorf("In order to access the LIFX API, you must supply a valid AccessToken and Endpoint")
 	}
 
 	request, err := http.NewRequest(http.MethodPut, client.Endpoint, bytes.NewBuffer(data))
