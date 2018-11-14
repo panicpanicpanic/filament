@@ -202,3 +202,26 @@ func PulseEffect(client *lifx.Client, selector string, payload interface{}) (lif
 	// Return lifx.Response or return error
 	return response, nil
 }
+
+// BreatheEffect performs a breathe effect by slowly fading between the given colors.
+func BreatheEffect(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+	var body []byte
+	var err error
+	var response lifx.Response
+
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
+	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/effects/pulse"
+
+	body, err = service.Post(client, payload)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	// Return lifx.Response or return error
+	return response, nil
+}
