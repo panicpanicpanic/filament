@@ -15,15 +15,8 @@ Filament is an unofficial Go wrapper for [LIFX's HTTP API](https://api.developer
 
 ## Installation
 
-You can install Filament with either ```go get```
 ```sh
 $ go get github.com/panicpanicpanic/filament
-```
-
- or ```dep```
-
-```sh
-$ dep ensure -add github.com/panicpanicpanic/filament
 ```
 
 ## How To Use
