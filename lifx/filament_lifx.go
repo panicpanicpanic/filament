@@ -10,3 +10,15 @@ type Client struct {
 	AccessToken string
 	Endpoint    string
 }
+
+// Response is a generic slice of results from LIFX API
+type Response struct {
+	Results []Result `json:"results"`
+}
+
+// Result returns ID, Status and Label from LIFX API
+type Result struct {
+	ID     string `json:"id"`
+	Status string `json:"status"`
+	Label  string `json:"label"`
+}

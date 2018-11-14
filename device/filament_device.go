@@ -31,6 +31,7 @@ type Color struct {
 	Hue        float64 `json:"hue"`
 	Saturation float64 `json:"saturation"`
 	Kelvin     float64 `json:"kelvin"`
+	Name       string  `json:"name"`
 }
 
 // Location represents what Location a Device belongs to
@@ -68,8 +69,13 @@ type Scene struct {
 	States    []State           `json:"states"`
 }
 
-// State represents the states of a DeviceScene
+// State represents the states of a Scene
 type State struct {
-	Color    `json:"color"`
-	Selector string `json:"selector"`
+	Color      Color   `json:"color"`
+	Selector   string  `json:"selector"`
+	Power      string  `json:"power"`
+	Fast       bool    `json:"fast"`
+	Brightness float64 `json:"brightnness"`
+	Duration   float64 `json:"duration"`
+	Infared    float64 `json:"infared"`
 }
