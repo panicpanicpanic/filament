@@ -51,7 +51,6 @@ import(
 ```
 
 # Available Methods
-Below are the current methods available in Filament
 ### GetLights
 > Gets lights belonging to the authenticated account.
 
