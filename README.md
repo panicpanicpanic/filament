@@ -36,8 +36,8 @@ In order to access your LIFX devices, you must first have a valid access token. 
 Once you have an access token, you use Filament like this:
 ```
 import(
-    'github.com/panicpanicpanic/filament'
-    'github.com/panicpanicpanic/filament/lifx'
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
 )
 
     client := lifx.Client{
@@ -62,8 +62,8 @@ LIFX API Endpoint Reference: `https://api.lifx.com/v1/lights/:selector`
 #### Example:
 ```
 import(
-    'github.com/panicpanicpanic/filament'
-    'github.com/panicpanicpanic/filament/lifx'
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
 )
 
 var err error
