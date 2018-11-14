@@ -40,14 +40,14 @@ import(
     "github.com/panicpanicpanic/filament/lifx"
 )
 
-    client := lifx.Client{
-            AccessToken: "someRandomToken"
-        }
-    
-    _, err := filament.SomeMethod(&client)
-    if err != nil {
-        fmt.Println("handle your error")
+client := lifx.Client{
+        AccessToken: "someRandomToken"
     }
+
+_, err := filament.SomeMethod(&client)
+if err != nil {
+    fmt.Println("handle your error")
+}
 ```
 
 # Available Methods
