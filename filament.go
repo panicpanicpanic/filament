@@ -252,3 +252,31 @@ func TogglePower(client *lifx.Client, selector string, payload interface{}) (lif
 	// Return lifx.Response or return error
 	return response, nil
 }
+
+// StateDelta changes the state of the lights by the amount specified
+func StateDelta(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+	var body []byte
+	var err error
+	var response lifx.Response
+
+	// If no selector is passed, default to changing the states on all lights for your LIFX account
+	if selector == "" {
+		selector = "all"
+	}
+
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
+	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/state/delta"
+
+	body, err = service.Post(client, payload)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	// Return lifx.Response or return error
+	return response, nil
+}
