@@ -156,3 +156,49 @@ func ActivateScene(client *lifx.Client, sceneUUID string, payload interface{}) (
 	// Return lifx.Response or return error
 	return response, nil
 }
+
+// Cycle makes the light(s) cycle to the next or previous state in a list of states
+func Cycle(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+	var body []byte
+	var err error
+	var response lifx.Response
+
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
+	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/cycle"
+
+	body, err = service.Post(client, payload)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	// Return lifx.Response or return error
+	return response, nil
+}
+
+// PulseEffect performs a pulse effect by quickly flashing between the given colors
+func PulseEffect(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+	var body []byte
+	var err error
+	var response lifx.Response
+
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
+	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/effects/pulse"
+
+	body, err = service.Post(client, payload)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	// Return lifx.Response or return error
+	return response, nil
+}
