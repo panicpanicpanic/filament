@@ -133,3 +133,26 @@ func SetStates(client *lifx.Client, payload interface{}) (lifx.Response, error) 
 	// Return lifx.Response or return error
 	return response, nil
 }
+
+// ActivateScene activates a scene from your LIFX account
+func ActivateScene(client *lifx.Client, sceneUUID string, payload interface{}) (lifx.Response, error) {
+	var body []byte
+	var err error
+	var response lifx.Response
+
+	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
+	client.Endpoint = lifx.LIFXAPIURL + "/scenes/scene_id:" + sceneUUID + "/activate"
+
+	body, err = service.Put(client, payload)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return response, fmt.Errorf(err.Error())
+	}
+
+	// Return lifx.Response or return error
+	return response, nil
+}
