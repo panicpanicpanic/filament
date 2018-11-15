@@ -124,9 +124,120 @@ if err!= nil {
     fmt.Println("handle your error here")
 }
 ```
+
 ### SetState
+> Sets the state of the lights within the selector.
+
+LIFX API Endpoint Reference: `https://api.lifx.com/v1/lights/:selector/state`
+
+`SetState` accepts a `lifx.Client` (which should contain your access token), a `selector` string and a `payload` inteface. All parameters (except for the selector) are optional. If you don't supply a parameter, `filament` will leave that value untouched.
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+selector := "deviceUID"
+payload := []byte(`
+  {
+    "power": "on"
+  }
+`)
+
+results, err := filament.SetState(&client, selector, payload)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
+
 ### SetStates
+> Sets different states on multiple selectors in a single request.
+
+LIFX API Endpoint Reference: `https://api.lifx.com/v1/lights/states`
+
+`SetStates` accepts a `lifx.Client` (which should contain your access token) and a `payload` inteface. All parameters (except for the selector) are optional. If you don't supply a parameter, `filament` will leave that value untouched.
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+payload := []byte(`
+  {
+    "states": [
+      {
+        "selector": "[selector 1]",
+        "power": "on"
+      },
+      {
+        "selector": "[selector N]",
+        "brightness": 0.5
+      }
+    ],
+    "defaults": {
+      "duration": 5.0
+    }
+  }
+`)
+
+results, err := filament.SetStates(&client, payload)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
+
 ### ActivateScene
+> Activates a scene from your LIFX account.
+
+LIFX API Endpoint Reference: `https://api.lifx.com/v1/scenes/scene_id::scene_uuid/activate`
+
+`ActivateScene` accepts a `lifx.Client` (which should contain your access token), a `sceneUUID` string, and a `payload` inteface. All parameters (except for the selector) are optional. If you don't supply a parameter, `filament` will leave that value untouched. 
+
+Please note some details about using the `fast` property when changing state: https://api.developer.lifx.com/docs/activate-scene#fast-mode
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+sceneUUID := "actualSceneUUID"
+
+payload := []byte(`
+  {
+    "fast": true
+  }
+`)
+
+results, err := filament.ActivateScene(&client, sceneUUID, payload)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
+
 ### Cycle
 ### PulseEffect
 ### BreatheEffect
