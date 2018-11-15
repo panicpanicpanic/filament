@@ -72,7 +72,58 @@ if err!= nil {
 ```
 
 ### GetScenes
+> Lists all the scenes available in the users account. 
+
+LIFX API Endpoint Reference: `https://api.lifx.com/v1/scenes`
+
+`GetScenes` accepts a `lifx.Client` (which should contain your access token). Scenes listed here can be activated with the `ActivateScene` method.
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+scenes, err := filament.GetScenes(&client)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
+
 ### ValidateColor
+> Lets you validate a user's color string and return the hue, saturation, brightness and kelvin values that the API will interpret as.
+
+LIFX API Endpoint Reference: `https://api.lifx.com/v1/color`
+
+`ValidateColor` accepts a `lifx.Client` (which should contain your access token), and a `color` string. 
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+color := "red"
+
+validateColor, err := filament.ValidateColor(&client, color)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
 ### SetState
 ### SetStates
 ### ActivateScene
