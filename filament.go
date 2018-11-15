@@ -227,7 +227,7 @@ func BreatheEffect(client *lifx.Client, selector string, payload interface{}) (l
 }
 
 // TogglePower turns off lights if any of them are on, or turns them on if they are all off.
-func TogglePower(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+func TogglePower(client *lifx.Client, selector string) (lifx.Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -239,7 +239,7 @@ func TogglePower(client *lifx.Client, selector string, payload interface{}) (lif
 	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
 	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/toggle"
 
-	body, err = service.Post(client, payload)
+	body, err = service.Post(client, nil)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}

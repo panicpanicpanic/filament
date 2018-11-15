@@ -239,10 +239,194 @@ if err!= nil {
 ```
 
 ### Cycle
+> Make the light(s) cycle to the next or previous state in a list of states.
+
+LIFX API Endpoint Reference: `https://api.lifx.com/v1/lights/:selector/cycle`
+
+`Cycle` accepts a `lifx.Client` (which should contain your access token), a `selector` string, and a `payload` inteface.
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+selector := "lightUID"
+
+payload := []byte(`
+  {
+    "states": [
+      {
+        "brightness": 1.0
+      },
+      {
+        "brightness": 0.5
+      },
+      {
+        "brightness": 0.1
+      },
+      {
+        "power": "off"
+      }
+    ],
+    "defaults": {
+      "power": "on",
+      "saturation": 0,
+      "duration": 2.0
+    }
+  }
+`)
+
+results, err := filament.Cycle(&client, selector, payload)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
+
 ### PulseEffect
+> Performs a pulse effect by quickly flashing between the given colors.
+
+LIFX API Endpoint Reference:
+`https://api.lifx.com/v1/lights/:selector/effects/pulse`
+
+`PulseEffect` accepts a `lifx.Client` (which should contain your access token), a `selector` string, and a `payload` inteface.
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+selector := "lightUID"
+
+payload := []byte(`
+  {
+    "period": "2",
+    "cycles": "5",
+    "color": "green"
+  }
+`)
+
+results, err := filament.PulseEffect(&client, selector, payload)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
+
 ### BreatheEffect
+> Performs a breathe effect by slowly fading between the given colors.
+
+LIFX API Endpoint Reference:
+`https://api.lifx.com/v1/lights/:selector/effects/breathe`
+
+`BreatheEffect` accepts a `lifx.Client` (which should contain your access token), a `selector` string, and a `payload` inteface.
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+selector := "lightUID"
+
+payload := []byte(`
+  {
+    "period": "2",
+    "cycles": "5",
+    "color": "green"
+  }
+`)
+
+results, err := filament.BreatheEffect(&client, selector, payload)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
+
 ### TogglePower
+> Turns off lights if any of them are on, or turns them on if they are all off.
+
+LIFX API Endpoint Reference:
+`https://api.lifx.com/v1/lights/:selector/toggle`
+
+`TogglePower` accepts a `lifx.Client` (which should contain your access token), and a `selector` string.
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+selector := "lightUID"
+
+results, err := filament.TogglePower(&client, selector)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
+
 ### StateDelta
+> Changes the state of the lights by the amount specified.
+
+LIFX API Endpoint Reference:
+`https://api.lifx.com/v1/lights/:selector/state/delta`
+
+`StateDelta` accepts a `lifx.Client` (which should contain your access token), a `selector` string, and a `payload` inteface. Parameters other than `power` and `duration` change the state of the lights by the amount specified. `power` and `duration` act like they do for the `SetState` method.
+
+#### Example:
+```
+import(
+    "github.com/panicpanicpanic/filament"
+    "github.com/panicpanicpanic/filament/lifx"
+)
+
+var err error
+
+client := lifx.Client{
+    AccessToken:"someRandomToken"
+}
+
+selector := "lightUID"
+
+payload := []byte(`
+  {
+    "brightness": "0.1"
+  }
+`)
+
+results, err := filament.StateDelta(&client, selector, payload)
+if err!= nil {
+    fmt.Println("handle your error here")
+}
+```
 
 ## Contributing
 Want to contribute? Just fork the repo, make a feature/bug PR and send it over! Just make sure your tests are passing :)
