@@ -6,7 +6,7 @@ import (
 
 // Device represents the core fields for a LIFX light source
 type Device struct {
-	ID               string    `json:"json"`
+	ID               string    `json:"id"`
 	UUID             string    `json:"uuid"`
 	Label            string    `json:"label"`
 	Connected        bool      `json:"connected"`
