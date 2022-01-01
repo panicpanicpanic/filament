@@ -1,13 +1,10 @@
-package service_test
+package lifx
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"reflect"
 	"testing"
-
-	"github.com/panicpanicpanic/filament/lifx"
-	"github.com/panicpanicpanic/filament/service"
 )
 
 func TestServiceGet(t *testing.T) {

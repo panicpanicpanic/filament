@@ -1,4 +1,4 @@
-package service
+package lifx
 
 import (
 	"bytes"
@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	"github.com/panicpanicpanic/filament/lifx"
 )
 
 // Get makes a GET request to the LIFX HTTP API and returns []byte or error
