@@ -1,7 +1,7 @@
 package internal
 
 import (
-"time"
+	"time"
 )
 
 // Device represents the core fields for a LIFX light source
@@ -77,5 +77,5 @@ type State struct {
 	Fast       bool    `json:"fast"`
 	Brightness float64 `json:"brightness"`
 	Duration   float64 `json:"duration"`
-	Infrared    float64 `json:"infrared"`
+	Infrared   float64 `json:"infrared"`
 }
