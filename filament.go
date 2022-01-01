@@ -10,7 +10,7 @@ import (
 )
 
 // GetLights returns []device.Device that belong to your LIFX account
-func GetLights(client *lifx.Client, selector string) ([]device.Device, error) {
+func (c *Client) GetLights(selector string) ([]device.Device, error) {
 	var body []byte
 	var devices []device.Device
 	var err error
@@ -38,7 +38,7 @@ func GetLights(client *lifx.Client, selector string) ([]device.Device, error) {
 }
 
 // GetScenes returns []device.Scene that belong to your LIFX account
-func GetScenes(client *lifx.Client) ([]device.Scene, error) {
+func (c *Client) GetScenes() ([]device.Scene, error) {
 	var body []byte
 	var scenes []device.Scene
 	var err error
@@ -61,7 +61,7 @@ func GetScenes(client *lifx.Client) ([]device.Scene, error) {
 }
 
 // ValidateColor returns a device.Color if a valid color string is passed
-func ValidateColor(client *lifx.Client, color string) (device.Color, error) {
+func (c *Client) ValidateColor(color string) (device.Color, error) {
 	var body []byte
 	var deviceColor device.Color
 	var err error
@@ -84,7 +84,7 @@ func ValidateColor(client *lifx.Client, color string) (device.Color, error) {
 }
 
 // SetState sets the state of the lights within the given selector, and returns a LIFX Response
-func SetState(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+func (c *Client) SetState(selector string, payload interface{}) (lifx.Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -112,7 +112,7 @@ func SetState(client *lifx.Client, selector string, payload interface{}) (lifx.R
 }
 
 // SetStates sets multiple states across multiple selectors, and returns a LIFX Response
-func SetStates(client *lifx.Client, payload interface{}) (lifx.Response, error) {
+func (c *Client) SetStates(payload interface{}) (lifx.Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -135,7 +135,7 @@ func SetStates(client *lifx.Client, payload interface{}) (lifx.Response, error) 
 }
 
 // ActivateScene activates a scene from your LIFX account
-func ActivateScene(client *lifx.Client, sceneUUID string, payload interface{}) (lifx.Response, error) {
+func (c *Client) ActivateScene(sceneUUID string, payload interface{}) (lifx.Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -158,7 +158,7 @@ func ActivateScene(client *lifx.Client, sceneUUID string, payload interface{}) (
 }
 
 // Cycle makes the light(s) cycle to the next or previous state in a list of states
-func Cycle(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+func (c *Client) Cycle(selector string, payload interface{}) (lifx.Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -181,7 +181,7 @@ func Cycle(client *lifx.Client, selector string, payload interface{}) (lifx.Resp
 }
 
 // PulseEffect performs a pulse effect by quickly flashing between the given colors
-func PulseEffect(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+func (c *Client) PulseEffect(selector string, payload interface{}) (lifx.Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -204,7 +204,7 @@ func PulseEffect(client *lifx.Client, selector string, payload interface{}) (lif
 }
 
 // BreatheEffect performs a breathe effect by slowly fading between the given colors.
-func BreatheEffect(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+func (c *Client) BreatheEffect(selector string, payload interface{}) (lifx.Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -227,7 +227,7 @@ func BreatheEffect(client *lifx.Client, selector string, payload interface{}) (l
 }
 
 // TogglePower turns off lights if any of them are on, or turns them on if they are all off.
-func TogglePower(client *lifx.Client, selector string) (lifx.Response, error) {
+func (c *Client) TogglePower(selector string) (lifx.Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -254,7 +254,7 @@ func TogglePower(client *lifx.Client, selector string) (lifx.Response, error) {
 }
 
 // StateDelta changes the state of the lights by the amount specified
-func StateDelta(client *lifx.Client, selector string, payload interface{}) (lifx.Response, error) {
+func (c *Client) StateDelta(selector string, payload interface{}) (lifx.Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
