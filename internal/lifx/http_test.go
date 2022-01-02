@@ -75,8 +75,8 @@ func TestGet(t *testing.T) {
 		},
 	}
 
+	t.Parallel()
 	for _, tt := range tests {
-		t.Parallel()
 		t.Run(tt.name, func(t *testing.T) {
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusOK)
