@@ -3,14 +3,10 @@ package filament
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/panicpanicpanic/filament/device"
-	"github.com/panicpanicpanic/filament/lifx"
-	"github.com/panicpanicpanic/filament/service"
 )
 
-// GetLights returns []device.Device that belong to your LIFX account
-func GetLights(selector string) ([]device.Device, error) {
+// GetLights returns []Device that belong to your LIFX account
+func GetLights(selector string) ([]Device, error) {
 	var body []byte
 	var devices []device.Device
 	var err error
@@ -37,8 +33,8 @@ func GetLights(selector string) ([]device.Device, error) {
 	return devices, nil
 }
 
-// GetScenes returns []device.Scene that belong to your LIFX account
-func GetScenes() ([]device.Scene, error) {
+// GetScenes returns []Scene that belong to your LIFX account
+func GetScenes() ([]Scene, error) {
 	var body []byte
 	var scenes []device.Scene
 	var err error
@@ -60,8 +56,8 @@ func GetScenes() ([]device.Scene, error) {
 	return scenes, nil
 }
 
-// ValidateColor returns a device.Color if a valid color string is passed
-func ValidateColor(color string) (device.Color, error) {
+// ValidateColor returns a Color if a valid color string is passed
+func ValidateColor(color string) (Color, error) {
 	var body []byte
 	var deviceColor device.Color
 	var err error
