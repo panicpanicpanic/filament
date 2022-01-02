@@ -1,4 +1,4 @@
-package device
+package filament
 
 import (
 	"time"
@@ -6,7 +6,7 @@ import (
 
 // Device represents the core fields for a LIFX light source
 type Device struct {
-	ID               string    `json:"json"`
+	ID               string    `json:"id"`
 	UUID             string    `json:"uuid"`
 	Label            string    `json:"label"`
 	Connected        bool      `json:"connected"`
@@ -75,7 +75,16 @@ type State struct {
 	Selector   string  `json:"selector"`
 	Power      string  `json:"power"`
 	Fast       bool    `json:"fast"`
-	Brightness float64 `json:"brightnness"`
+	Brightness float64 `json:"brightness"`
 	Duration   float64 `json:"duration"`
-	Infared    float64 `json:"infared"`
+	Infrared   float64 `json:"infrared"`
+}
+
+// Response is a generic slice of results from LIFX API
+type Response struct {
+	Results []struct {
+		ID     string `json:"id"`
+		Status string `json:"status"`
+		Label  string `json:"label"`
+	} `json:"results"`
 }
