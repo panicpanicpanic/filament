@@ -2,24 +2,27 @@ package filament
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
 // GetLights returns []Device that belong to your LIFX account
 func GetLights(selector string) ([]Device, error) {
-	var body []byte
-	var devices []device.Device
-	var err error
+	var (
+		body    []byte
+		devices []Device
+		err     error
+	)
 
-	// If no selector is passed, default to retrieving all lights for your LIFX account
 	if selector == "" {
 		selector = "all"
 	}
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and URL path
-	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector
+	if endpoint := lifx.returnAPIEndpoint(GetLightsEndpoint, selector); endpoint == "" {
+		return devices, errors.New("not a valid endpoint")
+	}
 
-	body, err = service.Get(client)
+	body, err = lifx.Get(endpoint)
 	if err != nil {
 		return devices, fmt.Errorf(err.Error())
 	}
@@ -29,20 +32,22 @@ func GetLights(selector string) ([]Device, error) {
 		return devices, fmt.Errorf(err.Error())
 	}
 
-	// Return []device.Device or return an error
 	return devices, nil
 }
 
 // GetScenes returns []Scene that belong to your LIFX account
 func GetScenes() ([]Scene, error) {
-	var body []byte
-	var scenes []device.Scene
-	var err error
+	var (
+		body   []byte
+		err    error
+		scenes []Scene
+	)
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/scenes"
+	if endpoint := lifx.returnAPIEndpoint(GetScenesEndpoint); endpoint == "" {
+		return scenes, errors.New("not a valid endpoint")
+	}
 
-	body, err = service.Get(client)
+	body, err = lifx.Get(endpoint)
 	if err != nil {
 		return scenes, fmt.Errorf(err.Error())
 	}
@@ -52,20 +57,22 @@ func GetScenes() ([]Scene, error) {
 		return scenes, fmt.Errorf(err.Error())
 	}
 
-	// Return []device.Scene or return an error
 	return scenes, nil
 }
 
 // ValidateColor returns a Color if a valid color string is passed
 func ValidateColor(color string) (Color, error) {
-	var body []byte
-	var deviceColor device.Color
-	var err error
+	var (
+		body        []byte
+		deviceColor Color
+		err         error
+	)
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/color?string=" + color
+	if endpoint := lifx.returnAPIEndpoint(ValidateColorEndpoint, color); endpoint == "" {
+		return deviceColor, errors.New("not a valid endpoint")
+	}
 
-	body, err = service.Get(client)
+	body, err = lifx.Get(endpoint)
 	if err != nil {
 		return deviceColor, fmt.Errorf(err.Error())
 	}
@@ -75,25 +82,26 @@ func ValidateColor(color string) (Color, error) {
 		return deviceColor, fmt.Errorf(err.Error())
 	}
 
-	// Return device.Color or return error
 	return deviceColor, nil
 }
 
 // SetState sets the state of the lights within the given selector, and returns a LIFX Response
 func SetState(selector string, payload interface{}) (Response, error) {
-	var body []byte
-	var err error
-	var response lifx.Response
+	var (
+		body     []byte
+		err      error
+		response Response
+	)
 
-	// If no selector is passed, default to setting state for all lights
 	if selector == "" {
 		selector = "all"
 	}
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/state"
+	if endpoint := lifx.returnAPIEndpoint(SetStateEndpoint, selector); endpoint == "" {
+		return response, errors.New("not a valid endpoint")
+	}
 
-	body, err = service.Put(client, payload)
+	body, err = lifx.Put(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -103,20 +111,22 @@ func SetState(selector string, payload interface{}) (Response, error) {
 		return response, fmt.Errorf(err.Error())
 	}
 
-	// Return lifx.Response or return error
 	return response, nil
 }
 
 // SetStates sets multiple states across multiple selectors, and returns a LIFX Response
 func SetStates(payload interface{}) (Response, error) {
-	var body []byte
-	var err error
-	var response lifx.Response
+	var (
+		body     []byte
+		err      error
+		response Response
+	)
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/lights/states"
+	if endpoint := lifx.returnAPIEndpoint(SetStatesEndpoint); endpoint == "" {
+		return response, errors.New("not a valid endpoint")
+	}
 
-	body, err = service.Put(client, payload)
+	body, err = lifx.Put(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -126,20 +136,22 @@ func SetStates(payload interface{}) (Response, error) {
 		return response, fmt.Errorf(err.Error())
 	}
 
-	// Return lifx.Response or return error
 	return response, nil
 }
 
 // ActivateScene activates a scene from your LIFX account
 func ActivateScene(sceneUUID string, payload interface{}) (Response, error) {
-	var body []byte
-	var err error
-	var response lifx.Response
+	var (
+		body     []byte
+		err      error
+		response Response
+	)
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/scenes/scene_id:" + sceneUUID + "/activate"
+	if endpoint := lifx.returnAPIEndpoint(ActivateSceneEndpoint, sceneUUID); endpoint == "" {
+		return response, errors.New("not a valid endpoint")
+	}
 
-	body, err = service.Put(client, payload)
+	body, err = lifx.Put(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -149,20 +161,26 @@ func ActivateScene(sceneUUID string, payload interface{}) (Response, error) {
 		return response, fmt.Errorf(err.Error())
 	}
 
-	// Return lifx.Response or return error
 	return response, nil
 }
 
 // Cycle makes the light(s) cycle to the next or previous state in a list of states
 func Cycle(selector string, payload interface{}) (Response, error) {
-	var body []byte
-	var err error
-	var response lifx.Response
+	var (
+		body     []byte
+		err      error
+		response Response
+	)
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/cycle"
+	if selector == "" {
+		selector = "all"
+	}
 
-	body, err = service.Post(client, payload)
+	if endpoint := lifx.returnAPIEndpoint(CycleEndpoint, selector); endpoint == "" {
+		return response, errors.New("not a valid endpoint")
+	}
+
+	body, err = lifx.Post(client, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -172,20 +190,26 @@ func Cycle(selector string, payload interface{}) (Response, error) {
 		return response, fmt.Errorf(err.Error())
 	}
 
-	// Return lifx.Response or return error
 	return response, nil
 }
 
 // PulseEffect performs a pulse effect by quickly flashing between the given colors
 func PulseEffect(selector string, payload interface{}) (Response, error) {
-	var body []byte
-	var err error
-	var response lifx.Response
+	var (
+		body     []byte
+		err      error
+		response Response
+	)
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/effects/pulse"
+	if selector == "" {
+		selector = "all"
+	}
 
-	body, err = service.Post(client, payload)
+	if endpoint := lifx.returnAPIEndpoint(PulseEndpoint, selector); endpoint == "" {
+		return response, errors.New("not a valid endpoint")
+	}
+
+	body, err = lifx.Post(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -195,20 +219,26 @@ func PulseEffect(selector string, payload interface{}) (Response, error) {
 		return response, fmt.Errorf(err.Error())
 	}
 
-	// Return lifx.Response or return error
 	return response, nil
 }
 
 // BreatheEffect performs a breathe effect by slowly fading between the given colors.
 func BreatheEffect(selector string, payload interface{}) (Response, error) {
-	var body []byte
-	var err error
-	var response lifx.Response
+	var (
+		body     []byte
+		err      error
+		response Response
+	)
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/effects/pulse"
+	if selector == "" {
+		selector = "all"
+	}
 
-	body, err = service.Post(client, payload)
+	if endpoint := lifx.returnAPIEndpoint(BreatheEndpoint, selector); endpoint == "" {
+		return response, errors.New("not a valid endpoint")
+	}
+
+	body, err = lifx.Post(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -218,24 +248,26 @@ func BreatheEffect(selector string, payload interface{}) (Response, error) {
 		return response, fmt.Errorf(err.Error())
 	}
 
-	// Return lifx.Response or return error
 	return response, nil
 }
 
 // TogglePower turns off lights if any of them are on, or turns them on if they are all off.
 func TogglePower(selector string) (Response, error) {
-	var body []byte
-	var err error
-	var response lifx.Response
+	var (
+		body     []byte
+		err      error
+		response Response
+	)
 
-	// If no selector is passed, default to toggle all lights on/off for your LIFX account
 	if selector == "" {
 		selector = "all"
 	}
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/toggle"
 
-	body, err = service.Post(client, nil)
+	if endpoint := lifx.returnAPIEndpoint(ToggleEndpoint, selector); endpoint == "" {
+		return response, errors.New("not a valid endpoint")
+	}
+
+	body, err = lifx.Post(endpoint, nil)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -245,25 +277,26 @@ func TogglePower(selector string) (Response, error) {
 		return response, fmt.Errorf(err.Error())
 	}
 
-	// Return lifx.Response or return error
 	return response, nil
 }
 
 // StateDelta changes the state of the lights by the amount specified
 func StateDelta(selector string, payload interface{}) (Response, error) {
-	var body []byte
-	var err error
-	var response lifx.Response
+	var (
+		body     []byte
+		err      error
+		response Response
+	)
 
-	// If no selector is passed, default to changing the states on all lights for your LIFX account
 	if selector == "" {
 		selector = "all"
 	}
 
-	// In order to access LIFX HTTP API, you must pass a valid AccessToken and Endpoint
-	client.Endpoint = lifx.LIFXAPIURL + "/lights/" + selector + "/state/delta"
+	if endpoint := lifx.returnAPIEndpoint(StateDeltaEndpoint, selector); endpoint == "" {
+		return response, errors.New("not a valid endpoint")
+	}
 
-	body, err = service.Post(client, payload)
+	body, err = lifx.Post(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -273,6 +306,5 @@ func StateDelta(selector string, payload interface{}) (Response, error) {
 		return response, fmt.Errorf(err.Error())
 	}
 
-	// Return lifx.Response or return error
 	return response, nil
 }

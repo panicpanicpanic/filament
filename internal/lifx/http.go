@@ -11,7 +11,18 @@ import (
 
 const (
 	// APIEndpoint is the URL for the latest LIFX HTTP API
-	APIEndpoint = "https://api.lifx.com/v1"
+	APIEndpoint           = "https://api.lifx.com/v1"
+	GetScenesEndpoint     = "%s/scenes"
+	ActivateSceneEndpoint = "%s/scenes/scene_id:%s/activate"
+	ValidateColorEndpoint = "%s/color?string=%s"
+	GetLightsEndpoint     = "%s/lights/%s"
+	SetStateEndpoint      = "%s/lights/%s/state"
+	SetStatesEndpoint     = "%s/lights/states"
+	StateDeltaEndpoint    = "%s/lights/%s/state/delta"
+	CycleEndpoint         = "%s/lights/%s/cycle"
+	ToggleEndpoint        = "%s/lights/%s/toggle"
+	PulseEndpoint         = "%s/lights/%s/effects/pulse"
+	BreatheEndpoint       = "%s/lights/%s/effects/breathe"
 )
 
 var (
@@ -147,4 +158,10 @@ func Post(endpoint string, payload interface{}) ([]byte, error) {
 	}
 
 	return body, nil
+}
+
+// returnAPIEndpoint constructs and returns the appropriate LIFX
+// API endpoint
+func returnAPIEndpoint(base, args string) string {
+	return fmt.Sprintf(base, APIEndpoint, args)
 }
