@@ -10,7 +10,7 @@ import (
 )
 
 // GetLights returns []device.Device that belong to your LIFX account
-func (c *Client) GetLights(selector string) ([]device.Device, error) {
+func GetLights(selector string) ([]device.Device, error) {
 	var body []byte
 	var devices []device.Device
 	var err error
@@ -38,7 +38,7 @@ func (c *Client) GetLights(selector string) ([]device.Device, error) {
 }
 
 // GetScenes returns []device.Scene that belong to your LIFX account
-func (c *Client) GetScenes() ([]device.Scene, error) {
+func GetScenes() ([]device.Scene, error) {
 	var body []byte
 	var scenes []device.Scene
 	var err error
@@ -61,7 +61,7 @@ func (c *Client) GetScenes() ([]device.Scene, error) {
 }
 
 // ValidateColor returns a device.Color if a valid color string is passed
-func (c *Client) ValidateColor(color string) (device.Color, error) {
+func ValidateColor(color string) (device.Color, error) {
 	var body []byte
 	var deviceColor device.Color
 	var err error
@@ -84,7 +84,7 @@ func (c *Client) ValidateColor(color string) (device.Color, error) {
 }
 
 // SetState sets the state of the lights within the given selector, and returns a LIFX Response
-func (c *Client) SetState(selector string, payload interface{}) (lifx.Response, error) {
+func SetState(selector string, payload interface{}) (Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -112,7 +112,7 @@ func (c *Client) SetState(selector string, payload interface{}) (lifx.Response, 
 }
 
 // SetStates sets multiple states across multiple selectors, and returns a LIFX Response
-func (c *Client) SetStates(payload interface{}) (lifx.Response, error) {
+func SetStates(payload interface{}) (Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -135,7 +135,7 @@ func (c *Client) SetStates(payload interface{}) (lifx.Response, error) {
 }
 
 // ActivateScene activates a scene from your LIFX account
-func (c *Client) ActivateScene(sceneUUID string, payload interface{}) (lifx.Response, error) {
+func ActivateScene(sceneUUID string, payload interface{}) (Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -158,7 +158,7 @@ func (c *Client) ActivateScene(sceneUUID string, payload interface{}) (lifx.Resp
 }
 
 // Cycle makes the light(s) cycle to the next or previous state in a list of states
-func (c *Client) Cycle(selector string, payload interface{}) (lifx.Response, error) {
+func Cycle(selector string, payload interface{}) (Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -181,7 +181,7 @@ func (c *Client) Cycle(selector string, payload interface{}) (lifx.Response, err
 }
 
 // PulseEffect performs a pulse effect by quickly flashing between the given colors
-func (c *Client) PulseEffect(selector string, payload interface{}) (lifx.Response, error) {
+func PulseEffect(selector string, payload interface{}) (Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -204,7 +204,7 @@ func (c *Client) PulseEffect(selector string, payload interface{}) (lifx.Respons
 }
 
 // BreatheEffect performs a breathe effect by slowly fading between the given colors.
-func (c *Client) BreatheEffect(selector string, payload interface{}) (lifx.Response, error) {
+func BreatheEffect(selector string, payload interface{}) (Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -227,7 +227,7 @@ func (c *Client) BreatheEffect(selector string, payload interface{}) (lifx.Respo
 }
 
 // TogglePower turns off lights if any of them are on, or turns them on if they are all off.
-func (c *Client) TogglePower(selector string) (lifx.Response, error) {
+func TogglePower(selector string) (Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response
@@ -254,7 +254,7 @@ func (c *Client) TogglePower(selector string) (lifx.Response, error) {
 }
 
 // StateDelta changes the state of the lights by the amount specified
-func (c *Client) StateDelta(selector string, payload interface{}) (lifx.Response, error) {
+func StateDelta(selector string, payload interface{}) (Response, error) {
 	var body []byte
 	var err error
 	var response lifx.Response

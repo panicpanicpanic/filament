@@ -8,6 +8,11 @@ import (
 	"net/http"
 )
 
+const (
+	// APIEndpoint is the URL for the latest LIFX HTTP API
+	APIEndpoint = "https://api.lifx.com/v1"
+)
+
 // Get makes a GET request to the LIFX HTTP API and returns []byte or error
 func Get(client *lifx.Client) ([]byte, error) {
 	var body []byte

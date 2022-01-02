@@ -1,9 +1,4 @@
-package lifx
-
-const (
-	// APIEndpoint is the URL for the latest LIFX HTTP API
-	APIEndpoint = "https://api.lifx.com/v1"
-)
+package filament
 
 // Response is a generic slice of results from LIFX API
 type Response struct {
