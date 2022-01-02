@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 const (
@@ -13,19 +14,26 @@ const (
 	APIEndpoint = "https://api.lifx.com/v1"
 )
 
-// Get makes a GET request to the LIFX HTTP API and returns []byte or error
-func Get(client *lifx.Client) ([]byte, error) {
-	var body []byte
-	var httpClient http.Client
-	var err error
-	var statusCode int
+var (
+	// AccessToken references the LIFX API Access Token
+	AccessToken = os.Getenv("LIFX_API_ACCESS_TOKEN")
+)
 
-	if client.AccessToken == "" || client.Endpoint == "" {
-		return body, fmt.Errorf("In order to access the LIFX API, you must supply a valid AccessToken and Endpoint")
+// Get makes a GET request to the LIFX HTTP API and returns []byte or error
+func Get(endpoint string) ([]byte, error) {
+	var (
+		body       []byte
+		err        error
+		httpClient http.Client
+		statusCode int
+	)
+
+	if endpoint == "" || AccessToken == "" {
+		return body, MissingTokenEndpointError
 	}
 
-	request, err := http.NewRequest(http.MethodGet, client.Endpoint, nil)
-	request.Header.Set("Authorization", "Bearer "+client.AccessToken)
+	request, err := http.NewRequest(http.MethodGet, endpoint, nil)
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", AccessToken))
 	if err != nil {
 		return body, fmt.Errorf(err.Error())
 	}
@@ -45,30 +53,32 @@ func Get(client *lifx.Client) ([]byte, error) {
 	responseString := string(body)
 
 	if statusCode > 207 {
-		return body, fmt.Errorf("Uh oh! You've received a %d status code. Error: %s", statusCode, responseString)
+		return body, fmt.Errorf("received a %d status code. error: %s", statusCode, responseString)
 	}
 
 	return body, nil
 }
 
 // Put makes a PUT request to the LIFX HTTP API and returns []byte or error
-func Put(client *lifx.Client, payload interface{}) ([]byte, error) {
-	var body []byte
-	var httpClient http.Client
-	var err error
-	var statusCode int
+func Put(endpoint string, payload interface{}) ([]byte, error) {
+	var (
+		body       []byte
+		err        error
+		httpClient http.Client
+		statusCode int
+	)
 
 	data, err := json.Marshal(payload)
 	if err != nil {
 		return nil, fmt.Errorf(err.Error())
 	}
 
-	if client.AccessToken == "" || client.Endpoint == "" {
-		return nil, fmt.Errorf("In order to access the LIFX API, you must supply a valid AccessToken and Endpoint")
+	if endpoint == "" || AccessToken == "" {
+		return body, MissingTokenEndpointError
 	}
 
-	request, err := http.NewRequest(http.MethodPut, client.Endpoint, bytes.NewBuffer(data))
-	request.Header.Set("Authorization", "Bearer "+client.AccessToken)
+	request, err := http.NewRequest(http.MethodPut, endpoint, bytes.NewBuffer(data))
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", AccessToken))
 	if err != nil {
 		return nil, fmt.Errorf(err.Error())
 	}
@@ -88,30 +98,32 @@ func Put(client *lifx.Client, payload interface{}) ([]byte, error) {
 	responseString := string(body)
 
 	if statusCode > 207 {
-		return nil, fmt.Errorf("Uh oh! You've received a %d status code. Error: %s", statusCode, responseString)
+		return body, fmt.Errorf("received a %d status code. error: %s", statusCode, responseString)
 	}
 
 	return body, nil
 }
 
 // Post makes a POST request to the LIFX HTTP API and returns []byte or error
-func Post(client *lifx.Client, payload interface{}) ([]byte, error) {
-	var body []byte
-	var httpClient http.Client
-	var err error
-	var statusCode int
+func Post(endpoint string, payload interface{}) ([]byte, error) {
+	var (
+		body       []byte
+		err        error
+		httpClient http.Client
+		statusCode int
+	)
 
 	data, err := json.Marshal(payload)
 	if err != nil {
 		return nil, fmt.Errorf(err.Error())
 	}
 
-	if client.AccessToken == "" || client.Endpoint == "" {
-		return nil, fmt.Errorf("In order to access the LIFX API, you must supply a valid AccessToken and Endpoint")
+	if endpoint == "" || AccessToken == "" {
+		return body, MissingTokenEndpointError
 	}
 
-	request, err := http.NewRequest(http.MethodPost, client.Endpoint, bytes.NewBuffer(data))
-	request.Header.Set("Authorization", "Bearer "+client.AccessToken)
+	request, err := http.NewRequest(http.MethodPost, endpoint, bytes.NewBuffer(data))
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", AccessToken))
 	if err != nil {
 		return nil, fmt.Errorf(err.Error())
 	}
@@ -131,7 +143,7 @@ func Post(client *lifx.Client, payload interface{}) ([]byte, error) {
 	responseString := string(body)
 
 	if statusCode > 207 {
-		return nil, fmt.Errorf("Uh oh! You've received a %d status code. Error: %s", statusCode, responseString)
+		return body, fmt.Errorf("received a %d status code. error: %s", statusCode, responseString)
 	}
 
 	return body, nil
