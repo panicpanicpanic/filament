@@ -4,21 +4,24 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
+	"github.com/panicpanicpanic/filament/internal/lifx"
 )
 
 // GetLights returns []Device that belong to your LIFX account
 func GetLights(selector string) ([]Device, error) {
 	var (
-		body    []byte
-		devices []Device
-		err     error
+		body     []byte
+		devices  []Device
+		endpoint string
+		err      error
 	)
 
 	if selector == "" {
 		selector = "all"
 	}
 
-	if endpoint := lifx.returnAPIEndpoint(GetLightsEndpoint, selector); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.GetLightsEndpoint, selector); endpoint == "" {
 		return devices, errors.New("not a valid endpoint")
 	}
 
@@ -38,12 +41,13 @@ func GetLights(selector string) ([]Device, error) {
 // GetScenes returns []Scene that belong to your LIFX account
 func GetScenes() ([]Scene, error) {
 	var (
-		body   []byte
-		err    error
-		scenes []Scene
+		body     []byte
+		endpoint string
+		err      error
+		scenes   []Scene
 	)
 
-	if endpoint := lifx.returnAPIEndpoint(GetScenesEndpoint); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.GetScenesEndpoint, ""); endpoint == "" {
 		return scenes, errors.New("not a valid endpoint")
 	}
 
@@ -65,10 +69,11 @@ func ValidateColor(color string) (Color, error) {
 	var (
 		body        []byte
 		deviceColor Color
+		endpoint    string
 		err         error
 	)
 
-	if endpoint := lifx.returnAPIEndpoint(ValidateColorEndpoint, color); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.ValidateColorEndpoint, color); endpoint == "" {
 		return deviceColor, errors.New("not a valid endpoint")
 	}
 
@@ -89,6 +94,7 @@ func ValidateColor(color string) (Color, error) {
 func SetState(selector string, payload interface{}) (Response, error) {
 	var (
 		body     []byte
+		endpoint string
 		err      error
 		response Response
 	)
@@ -97,7 +103,7 @@ func SetState(selector string, payload interface{}) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.returnAPIEndpoint(SetStateEndpoint, selector); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.SetStateEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
@@ -118,11 +124,12 @@ func SetState(selector string, payload interface{}) (Response, error) {
 func SetStates(payload interface{}) (Response, error) {
 	var (
 		body     []byte
+		endpoint string
 		err      error
 		response Response
 	)
 
-	if endpoint := lifx.returnAPIEndpoint(SetStatesEndpoint); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.SetStatesEndpoint, ""); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
@@ -143,11 +150,12 @@ func SetStates(payload interface{}) (Response, error) {
 func ActivateScene(sceneUUID string, payload interface{}) (Response, error) {
 	var (
 		body     []byte
+		endpoint string
 		err      error
 		response Response
 	)
 
-	if endpoint := lifx.returnAPIEndpoint(ActivateSceneEndpoint, sceneUUID); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.ActivateSceneEndpoint, sceneUUID); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
@@ -168,6 +176,7 @@ func ActivateScene(sceneUUID string, payload interface{}) (Response, error) {
 func Cycle(selector string, payload interface{}) (Response, error) {
 	var (
 		body     []byte
+		endpoint string
 		err      error
 		response Response
 	)
@@ -176,11 +185,11 @@ func Cycle(selector string, payload interface{}) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.returnAPIEndpoint(CycleEndpoint, selector); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.CycleEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Post(client, payload)
+	body, err = lifx.Post(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -197,6 +206,7 @@ func Cycle(selector string, payload interface{}) (Response, error) {
 func PulseEffect(selector string, payload interface{}) (Response, error) {
 	var (
 		body     []byte
+		endpoint string
 		err      error
 		response Response
 	)
@@ -205,7 +215,7 @@ func PulseEffect(selector string, payload interface{}) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.returnAPIEndpoint(PulseEndpoint, selector); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.PulseEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
@@ -226,6 +236,7 @@ func PulseEffect(selector string, payload interface{}) (Response, error) {
 func BreatheEffect(selector string, payload interface{}) (Response, error) {
 	var (
 		body     []byte
+		endpoint string
 		err      error
 		response Response
 	)
@@ -234,7 +245,7 @@ func BreatheEffect(selector string, payload interface{}) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.returnAPIEndpoint(BreatheEndpoint, selector); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.BreatheEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
@@ -255,6 +266,7 @@ func BreatheEffect(selector string, payload interface{}) (Response, error) {
 func TogglePower(selector string) (Response, error) {
 	var (
 		body     []byte
+		endpoint string
 		err      error
 		response Response
 	)
@@ -263,7 +275,7 @@ func TogglePower(selector string) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.returnAPIEndpoint(ToggleEndpoint, selector); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.ToggleEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
@@ -284,6 +296,7 @@ func TogglePower(selector string) (Response, error) {
 func StateDelta(selector string, payload interface{}) (Response, error) {
 	var (
 		body     []byte
+		endpoint string
 		err      error
 		response Response
 	)
@@ -292,7 +305,7 @@ func StateDelta(selector string, payload interface{}) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.returnAPIEndpoint(StateDeltaEndpoint, selector); endpoint == "" {
+	if endpoint := lifx.ReturnAPIEndpoint(lifx.StateDeltaEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 

@@ -160,8 +160,8 @@ func Post(endpoint string, payload interface{}) ([]byte, error) {
 	return body, nil
 }
 
-// returnAPIEndpoint constructs and returns the appropriate LIFX
+// ReturnAPIEndpoint constructs and returns the appropriate LIFX
 // API endpoint
-func returnAPIEndpoint(base, args string) string {
+func ReturnAPIEndpoint(base, args string) string {
 	return fmt.Sprintf(base, APIEndpoint, args)
 }
