@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 )
 
@@ -83,11 +82,9 @@ func TestGet(t *testing.T) {
 				w.Write(payload)
 			}))
 
-			os.Setenv("LIFX_API_ACCESS_TOKEN", tt.accessToken)
-
 			url := fmt.Sprintf("%s/%s", server.URL, tt.endpoint)
 
-			if _, err := get(url); (err != nil) != tt.expectedErr {
+			if _, err := get(url, tt.accessToken); (err != nil) != tt.expectedErr {
 				t.Errorf("expected to get error %v, got %v", tt.expectedErr, err)
 			}
 		})
