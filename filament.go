@@ -4,42 +4,35 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-
-	"github.com/panicpanicpanic/filament/internal/lifx"
 )
 
+const (
+	lifxAPIVersion = "v1"
+)
+
+type Client struct {
+	token   string
+	version string
+}
+
+func NewClient(token string) (*Client, error) {
+	if token == "" {
+		return nil, errors.New("token can't be empty")
+	}
+
+	return &Client{
+		token:   token,
+		version: lifxAPIVersion,
+	}, nil
+}
+
 // GetLights returns []Device that belong to your LIFX account
-func GetLights(selector string) ([]Device, error) {
-	var (
-		body     []byte
-		devices  []Device
-		endpoint string
-		err      error
-	)
-
-	if selector == "" {
-		selector = "all"
-	}
-
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.GetLightsEndpoint, selector); endpoint == "" {
-		return devices, errors.New("not a valid endpoint")
-	}
-
-	body, err = lifx.Get(endpoint)
-	if err != nil {
-		return devices, fmt.Errorf(err.Error())
-	}
-
-	err = json.Unmarshal(body, &devices)
-	if err != nil {
-		return devices, fmt.Errorf(err.Error())
-	}
-
-	return devices, nil
+func (c *Client) GetLights(selector string) ([]Device, error) {
+	return getLights(selector)
 }
 
 // GetScenes returns []Scene that belong to your LIFX account
-func GetScenes() ([]Scene, error) {
+func (c *Client) GetScenes() ([]Scene, error) {
 	var (
 		body     []byte
 		endpoint string
@@ -47,11 +40,11 @@ func GetScenes() ([]Scene, error) {
 		scenes   []Scene
 	)
 
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.GetScenesEndpoint, ""); endpoint == "" {
+	if endpoint := returnAPIEndpoint(GetScenesEndpoint, ""); endpoint == "" {
 		return scenes, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Get(endpoint)
+	body, err = get(endpoint)
 	if err != nil {
 		return scenes, fmt.Errorf(err.Error())
 	}
@@ -65,7 +58,7 @@ func GetScenes() ([]Scene, error) {
 }
 
 // ValidateColor returns a Color if a valid color string is passed
-func ValidateColor(color string) (Color, error) {
+func (c *Client) ValidateColor(color string) (Color, error) {
 	var (
 		body        []byte
 		deviceColor Color
@@ -73,11 +66,11 @@ func ValidateColor(color string) (Color, error) {
 		err         error
 	)
 
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.ValidateColorEndpoint, color); endpoint == "" {
+	if endpoint := returnAPIEndpoint(ValidateColorEndpoint, color); endpoint == "" {
 		return deviceColor, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Get(endpoint)
+	body, err = get(endpoint)
 	if err != nil {
 		return deviceColor, fmt.Errorf(err.Error())
 	}
@@ -91,7 +84,7 @@ func ValidateColor(color string) (Color, error) {
 }
 
 // SetState sets the state of the lights within the given selector, and returns a LIFX Response
-func SetState(selector string, payload interface{}) (Response, error) {
+func (c *Client) SetState(selector string, payload any) (Response, error) {
 	var (
 		body     []byte
 		endpoint string
@@ -103,11 +96,11 @@ func SetState(selector string, payload interface{}) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.SetStateEndpoint, selector); endpoint == "" {
+	if endpoint := returnAPIEndpoint(SetStateEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Put(endpoint, payload)
+	body, err = put(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -121,7 +114,7 @@ func SetState(selector string, payload interface{}) (Response, error) {
 }
 
 // SetStates sets multiple states across multiple selectors, and returns a LIFX Response
-func SetStates(payload interface{}) (Response, error) {
+func (c *Client) SetStates(payload any) (Response, error) {
 	var (
 		body     []byte
 		endpoint string
@@ -129,11 +122,11 @@ func SetStates(payload interface{}) (Response, error) {
 		response Response
 	)
 
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.SetStatesEndpoint, ""); endpoint == "" {
+	if endpoint := returnAPIEndpoint(SetStatesEndpoint, ""); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Put(endpoint, payload)
+	body, err = put(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -147,7 +140,7 @@ func SetStates(payload interface{}) (Response, error) {
 }
 
 // ActivateScene activates a scene from your LIFX account
-func ActivateScene(sceneUUID string, payload interface{}) (Response, error) {
+func (c *Client) ActivateScene(sceneUUID string, payload any) (Response, error) {
 	var (
 		body     []byte
 		endpoint string
@@ -155,11 +148,11 @@ func ActivateScene(sceneUUID string, payload interface{}) (Response, error) {
 		response Response
 	)
 
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.ActivateSceneEndpoint, sceneUUID); endpoint == "" {
+	if endpoint := returnAPIEndpoint(ActivateSceneEndpoint, sceneUUID); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Put(endpoint, payload)
+	body, err = put(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -173,7 +166,7 @@ func ActivateScene(sceneUUID string, payload interface{}) (Response, error) {
 }
 
 // Cycle makes the light(s) cycle to the next or previous state in a list of states
-func Cycle(selector string, payload interface{}) (Response, error) {
+func (c *Client) Cycle(selector string, payload any) (Response, error) {
 	var (
 		body     []byte
 		endpoint string
@@ -185,11 +178,11 @@ func Cycle(selector string, payload interface{}) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.CycleEndpoint, selector); endpoint == "" {
+	if endpoint := returnAPIEndpoint(CycleEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Post(endpoint, payload)
+	body, err = post(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -203,7 +196,7 @@ func Cycle(selector string, payload interface{}) (Response, error) {
 }
 
 // PulseEffect performs a pulse effect by quickly flashing between the given colors
-func PulseEffect(selector string, payload interface{}) (Response, error) {
+func (c *Client) PulseEffect(selector string, payload any) (Response, error) {
 	var (
 		body     []byte
 		endpoint string
@@ -215,11 +208,11 @@ func PulseEffect(selector string, payload interface{}) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.PulseEndpoint, selector); endpoint == "" {
+	if endpoint := returnAPIEndpoint(PulseEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Post(endpoint, payload)
+	body, err = post(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -233,7 +226,7 @@ func PulseEffect(selector string, payload interface{}) (Response, error) {
 }
 
 // BreatheEffect performs a breathe effect by slowly fading between the given colors.
-func BreatheEffect(selector string, payload interface{}) (Response, error) {
+func (c *Client) BreatheEffect(selector string, payload any) (Response, error) {
 	var (
 		body     []byte
 		endpoint string
@@ -241,15 +234,11 @@ func BreatheEffect(selector string, payload interface{}) (Response, error) {
 		response Response
 	)
 
-	if selector == "" {
-		selector = "all"
-	}
-
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.BreatheEndpoint, selector); endpoint == "" {
+	if endpoint := returnAPIEndpoint(BreatheEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Post(endpoint, payload)
+	body, err = post(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -263,7 +252,7 @@ func BreatheEffect(selector string, payload interface{}) (Response, error) {
 }
 
 // TogglePower turns off lights if any of them are on, or turns them on if they are all off.
-func TogglePower(selector string) (Response, error) {
+func (c *Client) TogglePower(selector string) (Response, error) {
 	var (
 		body     []byte
 		endpoint string
@@ -275,11 +264,11 @@ func TogglePower(selector string) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.ToggleEndpoint, selector); endpoint == "" {
+	if endpoint := returnAPIEndpoint(ToggleEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Post(endpoint, nil)
+	body, err = post(endpoint, nil)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}
@@ -293,7 +282,7 @@ func TogglePower(selector string) (Response, error) {
 }
 
 // StateDelta changes the state of the lights by the amount specified
-func StateDelta(selector string, payload interface{}) (Response, error) {
+func (c *Client) StateDelta(selector string, payload any) (Response, error) {
 	var (
 		body     []byte
 		endpoint string
@@ -305,11 +294,11 @@ func StateDelta(selector string, payload interface{}) (Response, error) {
 		selector = "all"
 	}
 
-	if endpoint := lifx.ReturnAPIEndpoint(lifx.StateDeltaEndpoint, selector); endpoint == "" {
+	if endpoint := returnAPIEndpoint(StateDeltaEndpoint, selector); endpoint == "" {
 		return response, errors.New("not a valid endpoint")
 	}
 
-	body, err = lifx.Post(endpoint, payload)
+	body, err = post(endpoint, payload)
 	if err != nil {
 		return response, fmt.Errorf(err.Error())
 	}

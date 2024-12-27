@@ -1,4 +1,4 @@
-package lifx
+package filament
 
 import (
 	"fmt"
@@ -87,7 +87,7 @@ func TestGet(t *testing.T) {
 
 			url := fmt.Sprintf("%s/%s", server.URL, tt.endpoint)
 
-			if _, err := Get(url); (err != nil) != tt.expectedErr {
+			if _, err := get(url); (err != nil) != tt.expectedErr {
 				t.Errorf("expected to get error %v, got %v", tt.expectedErr, err)
 			}
 		})

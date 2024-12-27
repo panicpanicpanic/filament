@@ -1,4 +1,4 @@
-package lifx
+package filament
 
 import (
 	"bytes"
@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	// APIEndpoint is the URL for the latest LIFX HTTP API
-	APIEndpoint           = "https://api.lifx.com/v1"
+	// aPIEndpoint is the URL for the latest LIFX HTTP API
+	aPIEndpoint           = "https://api.lifx.com/v1"
 	GetScenesEndpoint     = "%s/scenes"
 	ActivateSceneEndpoint = "%s/scenes/scene_id:%s/activate"
 	ValidateColorEndpoint = "%s/color?string=%s"
@@ -30,8 +30,8 @@ var (
 	AccessToken = os.Getenv("LIFX_API_ACCESS_TOKEN")
 )
 
-// Get makes a GET request to the LIFX HTTP API and returns []byte or error
-func Get(endpoint string) ([]byte, error) {
+// get makes a GET request to the LIFX HTTP API and returns []byte or error
+func get(endpoint string) ([]byte, error) {
 	var (
 		body       []byte
 		err        error
@@ -70,8 +70,8 @@ func Get(endpoint string) ([]byte, error) {
 	return body, nil
 }
 
-// Put makes a PUT request to the LIFX HTTP API and returns []byte or error
-func Put(endpoint string, payload interface{}) ([]byte, error) {
+// put makes a PUT request to the LIFX HTTP API and returns []byte or error
+func put(endpoint string, payload any) ([]byte, error) {
 	var (
 		body       []byte
 		err        error
@@ -115,8 +115,8 @@ func Put(endpoint string, payload interface{}) ([]byte, error) {
 	return body, nil
 }
 
-// Post makes a POST request to the LIFX HTTP API and returns []byte or error
-func Post(endpoint string, payload interface{}) ([]byte, error) {
+// post makes a POST request to the LIFX HTTP API and returns []byte or error
+func post(endpoint string, payload any) ([]byte, error) {
 	var (
 		body       []byte
 		err        error
@@ -160,8 +160,10 @@ func Post(endpoint string, payload interface{}) ([]byte, error) {
 	return body, nil
 }
 
-// ReturnAPIEndpoint constructs and returns the appropriate LIFX
-// API endpoint
-func ReturnAPIEndpoint(base, args string) string {
-	return fmt.Sprintf(base, APIEndpoint, args)
+// returnAPIEndpoint constructs and returns the appropriate LIFX API endpoint
+func returnAPIEndpoint(base, args string) string {
+	if args == "" {
+		args = "all"
+	}
+	return fmt.Sprintf(base, aPIEndpoint, args)
 }

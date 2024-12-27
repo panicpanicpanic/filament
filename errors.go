@@ -1,4 +1,4 @@
-package lifx
+package filament
 
 import "errors"
 
